@@ -79,7 +79,7 @@ class UploadcareAdapter implements FilesystemAdapter
         if (!str_contains($path, '~')) {
             return false;
         }
-        
+
         try {
             $this->api->group()->groupInfo($path);
         } catch (\Uploadcare\Exception\HttpException $e) {
@@ -420,5 +420,12 @@ class UploadcareAdapter implements FilesystemAdapter
     public function copy(string $source, string $destination, Config $config): void
     {
         throw new UnableToCopyFile();
+    }
+
+    public function getUrl(string $path): string
+    {
+        [$id, $uuid] = explode('/', $path);
+
+        return $this->getCdn().'/'.$uuid.'/';
     }
 }
